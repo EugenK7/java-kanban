@@ -41,11 +41,7 @@ public class TaskManager {
     }
 
     public ArrayList<Task> getAllTasks() { // печать списка всех задач
-        ArrayList<Task> taskList = new ArrayList<>();
-        for (Task task : tasks.values()) {
-            taskList.add(task);
-        }
-        return taskList;
+        return new ArrayList<>(tasks.values());
     }
 
     public void deleteTaskById(int taskId) { // удаление задачи по id
@@ -76,16 +72,14 @@ public class TaskManager {
     }
 
     public ArrayList<Epic> getAllEpics() { // печать всех эпиков
-        ArrayList<Epic> epicList = new ArrayList<>();
-        for (Epic epic : epics.values()) {
-            epicList.add(epic);
-        }
-        return epicList;
+        return new ArrayList<>(epics.values());
     }
 
     public void deleteEpicById(int epicId) { // удаление эпика по id
         Epic epic = epics.get(epicId); // находим эпик по id
-        epic.getSubTaskIds().clear(); // удаляем его подзадачи
+        for(Integer id : epic.getSubTaskIds()) { // удаляем по списку id подзадач сами подзадачи
+            subTasks.remove(id);
+        }
         epics.remove(epicId); // удаляем эпик
     }
 
@@ -98,9 +92,12 @@ public class TaskManager {
         subTask.setId(generateId());
         subTasks.put(subTask.getId(), subTask);
         Epic epic = epics.get(subTask.getEpicId()); // находим эпик по эпик-id
-        epic.getSubTaskIds().add(subTask.getId()); // добавляем id подзадачи в список к эпику
-        calculateStatusEpic(epic); // рассчитываем статус эпика
-        return subTask;
+        if(epic != null) {
+            epic.getSubTaskIds().add(subTask.getId()); // добавляем id подзадачи в список к эпику
+            calculateStatusEpic(epic); // рассчитываем статус эпика
+            return subTask;
+        }
+        return null;
     }
 
     public void updateSubTask(Subtask subTask) { // обновление подзадачи
@@ -120,11 +117,7 @@ public class TaskManager {
     }
 
     public ArrayList<Subtask> getAllSubTasks() { // печать всех подзадач
-        ArrayList<Subtask> subTaskList = new ArrayList<>();
-        for (Subtask subTask : subTasks.values()) {
-            subTaskList.add(subTask);
-        }
-        return subTaskList;
+        return new ArrayList<>(subTasks.values());
     }
 
     public void deleteSubTaskById(int subTaskId) { // удаление подзадачи по id
@@ -132,11 +125,13 @@ public class TaskManager {
         Epic epic = epics.get(subtask.getEpicId()); // находим эпик по id эпика
         epic.getSubTaskIds().remove(subTaskId); // удаляем id подзадачи из списка в эпике
         subTasks.remove(subTaskId); // удаляем подзадачу
+        calculateStatusEpic(epic); // обновляем статус эпика
     }
 
     public void deleteAllSubTasks() { // удаление всех подзадач
         for(Epic epic : epics.values()) { // очищаем списки id подзадач во всех эпиках
             epic.getSubTaskIds().clear();
+            calculateStatusEpic(epic); // обновляем статус эпика
         }
         subTasks.clear(); // очищаем список подзадач
     }

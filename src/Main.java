@@ -59,11 +59,17 @@ public class Main {
 
         taskManager.deleteTaskById(1);
 
-        taskManager.deleteEpicById(3);
+       // taskManager.deleteEpicById(3);
 
         System.out.println("Список всех эпиков:" + taskManager.getAllEpics());
 
 
         System.out.println("Список всех задач:" + taskManager.getAllTasks());
+
+        Subtask subtask7 = taskManager.createSubTask(new Subtask
+                ("Подздч48", "Опис пдздч12", TaskStatus.NEW, 9));
+        System.out.println("Создание подзадачи 45: " + subtask7);
+
+        System.out.println("Список всех эпиков:" + taskManager.getAllEpics());
     }
 }
