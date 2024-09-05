@@ -123,8 +123,8 @@ public class TaskManager {
     public void deleteSubTaskById(int subTaskId) { // удаление подзадачи по id
         Subtask subtask = subTasks.get(subTaskId); // находим подзадачу по id подзадачи
         Epic epic = epics.get(subtask.getEpicId()); // находим эпик по id эпика
-        epic.getSubTaskIds().remove(subTaskId); // удаляем id подзадачи из списка в эпике
-        subTasks.remove((Integer) subTaskId, subtask); // удаляем подзадачу
+        epic.getSubTaskIds().remove(Integer.valueOf(subTaskId)); // удаляем подзадачу из списка в эпике
+        subTasks.remove(subTaskId); // удаляем подзадачу из таблицы
         calculateStatusEpic(epic); // обновляем статус эпика
     }
 
