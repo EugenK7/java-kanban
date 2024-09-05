@@ -124,7 +124,7 @@ public class TaskManager {
         Subtask subtask = subTasks.get(subTaskId); // находим подзадачу по id подзадачи
         Epic epic = epics.get(subtask.getEpicId()); // находим эпик по id эпика
         epic.getSubTaskIds().remove(subTaskId); // удаляем id подзадачи из списка в эпике
-        subTasks.remove(subTaskId); // удаляем подзадачу
+        subTasks.remove((Integer) subTaskId); // удаляем подзадачу
         calculateStatusEpic(epic); // обновляем статус эпика
     }
 
