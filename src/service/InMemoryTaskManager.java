@@ -14,13 +14,13 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks;
     private HashMap<Integer, Epic> epics;
     private HashMap<Integer, Subtask> subTasks;
-    private List<Task> listOfViewedTasks;
+    private final HistoryManager historyManager;
 
-    public InMemoryTaskManager() {
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
         this.tasks = new HashMap<>();
         this.epics = new HashMap<>();
         this.subTasks = new HashMap<>();
-        this.listOfViewedTasks = new ArrayList<>(10);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int taskId) {// получение задачи по id
-        listOfViewedTasks.add(tasks.get(taskId));
+        historyManager.add(tasks.get(taskId));
         return tasks.get(taskId);
     }
 
@@ -81,7 +81,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpicById(int epicId) { // получение эпика по id
-        listOfViewedTasks.add(epics.get(epicId));
+        historyManager.add(epics.get(epicId));
         return epics.get(epicId);
     }
 
@@ -133,7 +133,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getSubTaskById(int subTaskId) { // получение подзадачи по id
-        listOfViewedTasks.add(subTasks.get(subTaskId));
+        historyManager.add(subTasks.get(subTaskId));
         return subTasks.get(subTaskId);
     }
 
@@ -172,10 +172,7 @@ public class InMemoryTaskManager implements TaskManager {
         return allSubtasks;
     }
 
-    @Override
-    public List<Task> getHistory() {
-        return listOfViewedTasks;
-    }
+
 
     private void calculateStatusEpic(Epic epic) { // расчет статуса эпика
         TaskStatus status = TaskStatus.NEW;
