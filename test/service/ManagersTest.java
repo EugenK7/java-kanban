@@ -12,6 +12,7 @@ class ManagersTest {
    //Managers managers = new Managers();
 
     @Test
+    @DisplayName("Создание менеджера задач и истории")
     public void shouldCreateTaskManager() {
 
         TaskManager taskManager = Managers.getDefault();

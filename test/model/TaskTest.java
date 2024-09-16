@@ -39,4 +39,14 @@ class TaskTest {
         assertEquals(subtaskExpected, subtaskActual, "Объекты Subtask не совпадают");
     }
 
+    @Test
+    @DisplayName("Поля задачи не изменяются при добавлении в менеджер")
+    public void shouldNotChangeTaskWhenAddingItToTheManager() {
+        Task task = taskManager.createTask(new Task("Задача_1", "Описание_1", TaskStatus.NEW));
+
+        assertEquals(task.getName(), "Задача_1", "Имя задачи изменилось");
+        assertEquals(task.getDescription(), "Описание_1", "Описание задачи изменилось");
+        assertEquals(task.getStatus(), TaskStatus.NEW, "Статус задачи изменился");
+    }
+
 }

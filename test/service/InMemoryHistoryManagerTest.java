@@ -2,6 +2,7 @@ package service;
 
 import model.Task;
 import model.TaskStatus;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,14 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryHistoryManagerTest {
 
-//    InMemoryTaskManager taskManager = new InMemoryTaskManager(new InMemoryHistoryManager());
-//    InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-
-
     HistoryManager historyManager = new InMemoryHistoryManager();
     TaskManager taskManager = new InMemoryTaskManager(historyManager);
 
     @Test
+    @DisplayName("Добавление задач в истоию просмотра")
     public void shouldAddTasksInHistory() {
         Task task1 = taskManager.createTask(new Task("Задача 1", "Описание", TaskStatus.NEW));
         Task task2 = taskManager.createTask(new Task("Задача 2", "Описание", TaskStatus.NEW));
@@ -38,6 +36,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
+    @DisplayName("Должны добавляться только 10 просмотренных задач в иторию")
     public void shouldAdd10TasksInHistory() {
         Task task1 = taskManager.createTask(new Task("Задача 1", "Описание", TaskStatus.NEW));
         Task task2 = taskManager.createTask(new Task("Задача 2", "Описание", TaskStatus.NEW));

@@ -17,6 +17,7 @@ class InMemoryTaskManagerTest {
     InMemoryTaskManager taskManager = new InMemoryTaskManager(new InMemoryHistoryManager());
 
     @Test
+    @DisplayName("Создание задачи")
     public void shouldBeCreatedTask() {
         Task task = taskManager.createTask(new Task("Задача тест", "Описание", TaskStatus.NEW));
 
@@ -24,6 +25,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Обновление задачи")
     public void shouldBeUpdatedTask() {
         Task taskActual = taskManager.createTask(new Task("Задача актуал", "Описание", TaskStatus.NEW));
         Task taskUpdate = taskManager.createTask(new Task("Нов назв", "Нов опис", TaskStatus.DONE));
@@ -39,6 +41,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Получение задачи по ID")
     public void shouldGetTaskById () {
         Task task = taskManager.createTask(new Task("Задача тест", "Описание", TaskStatus.NEW));
 
@@ -48,6 +51,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Получение списка задач")
     public void shouldGetAllTasks() {
         Task task1 = taskManager.createTask(new Task("Задача 1", "Описание1", TaskStatus.NEW));
         Task task2 = taskManager.createTask(new Task("Задача 2", "Описание2", TaskStatus.NEW));
@@ -77,6 +81,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Удаление задачи по ID")
     public void shouldDeleteTaskById() {
         Task task1 = taskManager.createTask(new Task("Задача-1", "Описание_1", TaskStatus.NEW));
         taskManager.deleteTaskById(task1.getId());
@@ -84,6 +89,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Удаление всех задач")
     public void shouldDeleteAllTasks() {
         Task task1 = taskManager.createTask(new Task("Задача 1", "Описание1", TaskStatus.NEW));
         Task task2 = taskManager.createTask(new Task("Задача 2", "Описание2", TaskStatus.NEW));
@@ -95,6 +101,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Создание эпика")
     public void shouldBeCreatedEpic() {
         Epic epic = taskManager.createEpic(new Epic("Эпик тест", "Назв эпика", TaskStatus.NEW));
 
@@ -102,6 +109,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Получение эпика по ID")
     public void shouldGetEpicById () {
         Epic epic = taskManager.createEpic(new Epic("Эпик", "Назв эпик", TaskStatus.NEW));
 
@@ -111,6 +119,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Удаление эпика по ID")
     public void deleteEpicByIdAndItsSubtasks() {
         Epic epic = taskManager.createEpic(new Epic("Эпик тест", "Назв эпика", TaskStatus.NEW));
         Subtask subtask1 = taskManager.createSubTask(new Subtask("Назв пдзч1", "Опис пдзч1", TaskStatus.NEW, 1));
@@ -124,6 +133,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Удаление всех эпиков")
     public void shouldDeleteAllEpicsAndAllItsSubtasks() {
         Epic epic = taskManager.createEpic(new Epic("Эпик тест", "Назв эпика", TaskStatus.NEW));
         Subtask subtask1 = taskManager.createSubTask(new Subtask("Назв пдзч1", "Опис пдзч1", TaskStatus.NEW, 1));
@@ -143,6 +153,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Создание подзадачи")
     public void shouldBeCreatedSubtask() {
         Epic epic = taskManager.createEpic(new Epic("Эпик тест", "Назв эпика", TaskStatus.NEW));
         Subtask subtask = taskManager.createSubTask(new Subtask("Назв пдзч", "Опис пдзч", TaskStatus.NEW, 1));
@@ -151,6 +162,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Полчение подзадачи по ID")
     public void shouldGetSubtaskById () {
         Epic epic = taskManager.createEpic(new Epic("Эпик тест", "Назв эпика", TaskStatus.NEW));
         Subtask subtask = taskManager.createSubTask(new Subtask("Назв пдзч", "Опис пдзч", TaskStatus.NEW, 1));
@@ -161,6 +173,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Обновление статуса эпика когда обновляются его подзадачи")
     public void shouldСalculateEpicStatusWhenUpdatingSubtasks() {
         Epic epic = taskManager.createEpic(new Epic("Эпик тест", "Назв эпика", TaskStatus.NEW));
         Subtask subtask1 = taskManager.createSubTask(new Subtask("Назв пдзч1", "Опис пдзч1", TaskStatus.NEW, 1));
