@@ -91,14 +91,14 @@ class InMemoryHistoryManagerTest {
         taskManager.getTaskById(task6.getId());
         taskManager.getTaskById(task7.getId());
         taskManager.getTaskById(task8.getId());
-        taskManager.getTaskById(task8.getId());
+        taskManager.getTaskById(task8.getId()); // не должна добавиться
         taskManager.getTaskById(task10.getId());
         taskManager.getTaskById(task11.getId());
-        taskManager.getTaskById(task12.getId()); // всего должно быть 10
+        taskManager.getTaskById(task12.getId()); // всего должно быть 9
 
         List<Task> listHistory = historyManager.getTasks();
 
-        assertEquals(listHistory.size(), 10, "Длина листа истории не совпадает");
+        assertEquals(listHistory.size(), 9, "Длина листа истории не совпадает");
     }
 
     @Test
