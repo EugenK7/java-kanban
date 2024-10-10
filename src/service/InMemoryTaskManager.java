@@ -40,7 +40,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTaskById(int taskId) {// получение задачи по id
+    public Task getTaskById(int taskId) { // получение задачи по id
         Task task = tasks.get(taskId);
         historyManager.add(task);
         return task;
