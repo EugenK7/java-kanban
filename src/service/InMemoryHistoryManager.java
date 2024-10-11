@@ -20,8 +20,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private HashMap<Integer, Node> history = new HashMap<>();
-    Node first;
-    Node last;
+    private Node first;
+    private Node last;
 
     @Override
     public void add(Task task) {
@@ -34,7 +34,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public ArrayList<Task> getTasks() {
+    public ArrayList<Task> getHistory() {
         ArrayList<Task> listTasks = new ArrayList<>();
         Node current = first;
         while (current != null) {
@@ -51,42 +51,37 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void linkLast(Task task) {
-        final Node oldLast = last;
-        final Node newNode = new Node(oldLast, task, null);
-        if (first == null) {
+        final Node newNode;
+        if(history.isEmpty()) {
+            newNode = new Node(null, task, null);
             first = newNode;
-            history.put(task.getId(), newNode);
-            return;
+            last = newNode;
+        } else {
+            final Node oldLast = last;
+            newNode = new Node(oldLast, task, null);
+            last = newNode;
+            oldLast.next = newNode;
+            newNode.prev = oldLast;
         }
-        Node lastNode = first;
-        while (lastNode.next != null) {
-            lastNode = lastNode.next;
-        }
-        lastNode.next = newNode;
-        newNode.prev = lastNode;
         history.put(task.getId(), newNode);
     }
 
     private void removeNode(Node node) {
-        Node currentNode = first;
-        if (currentNode != null && currentNode == node) {
+        if (node == null) {
+            return;
+        }
+        if (node.prev == null && node.next == null) {
+            first = null;
+            last = null;
+        } else if (node.prev == null) {
             first = node.next;
-            if (first != null) {
-                node.prev = null;
-            }
-            return;
-        }
-        while (currentNode != null && currentNode != node) {
-            currentNode = currentNode.next;
-        }
-        if (currentNode == null) {
-            return;
-        }
-        if (currentNode.next != null) {
-            currentNode.next.prev = currentNode.prev;
-        }
-        if (currentNode.prev != null) {
-            currentNode.prev.next = currentNode.next;
+            first.prev = null;
+        } else if (node.next == null) {
+            last = node.prev;
+            last.next = null;
+        } else if (node.prev != null && node.next != null) {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
         }
         history.remove(node.task.getId());
     }
