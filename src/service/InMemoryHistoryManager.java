@@ -52,7 +52,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private void linkLast(Task task) {
         final Node newNode;
-        if(history.isEmpty()) {
+        if (history.isEmpty()) {
             newNode = new Node(null, task, null);
             first = newNode;
             last = newNode;
