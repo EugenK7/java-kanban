@@ -170,7 +170,7 @@ public class InMemoryTaskManager implements TaskManager {
             calculateStatusEpic(epic); // обновляем статус эпика
         }
         subTasks.clear(); // очищаем список подзадач
-        for(Subtask subtask : subTasks.values()) {
+        for (Subtask subtask : subTasks.values()) {
             historyManager.remove(subtask.getId());
         }
     }
