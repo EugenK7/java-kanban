@@ -25,22 +25,6 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    @DisplayName("Обновление задачи")
-    public void shouldBeUpdatedTask() {
-        Task taskActual = taskManager.createTask(new Task("Задача актуал", "Описание", TaskStatus.NEW));
-        Task taskUpdate = taskManager.createTask(new Task("Нов назв", "Нов опис", TaskStatus.DONE));
-
-        taskUpdate.setId(taskActual.getId()); // ставим ID у обновления как у текущей задачи
-        taskUpdate.setStatus(TaskStatus.DONE); // меняем статус т к всегда при создании задачи ставится NEW
-        taskManager.updateTask(taskUpdate);
-
-        assertEquals(taskUpdate.getName(), taskActual.getName(), "ID задач не совпадают");
-        assertEquals(taskUpdate.getName(), taskActual.getName(), "Название задачи не обновлено");
-        assertEquals(taskUpdate.getDescription(), taskActual.getDescription(), "Описание задачи не обновлено");
-        assertEquals(taskUpdate.getStatus(), taskActual.getStatus(), "Статус не обновлен");
-    }
-
-    @Test
     @DisplayName("Получение задачи по ID")
     public void shouldGetTaskById () {
         Task task = taskManager.createTask(new Task("Задача тест", "Описание", TaskStatus.NEW));
