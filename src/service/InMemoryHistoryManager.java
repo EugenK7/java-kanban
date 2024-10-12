@@ -51,15 +51,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void linkLast(Task task) {
-        final Node newNode;
+        final Node oldLast = last;
+        final Node newNode = new Node(last, task, null);
+        last = newNode;
         if (history.isEmpty()) {
-            newNode = new Node(null, task, null);
             first = newNode;
-            last = newNode;
         } else {
-            final Node oldLast = last;
-            newNode = new Node(oldLast, task, null);
-            last = newNode;
             oldLast.next = newNode;
             newNode.prev = oldLast;
         }

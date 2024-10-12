@@ -148,5 +148,4 @@ class InMemoryHistoryManagerTest {
 
         assertEquals(historyManager.getHistory(), List.of(), "Задача не удалена");
     }
-
 }

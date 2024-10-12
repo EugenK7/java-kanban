@@ -102,6 +102,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
         epics.remove(epicId); // удаляем эпик
         historyManager.remove(epicId);
+        ArrayList<Integer> subTaskIds = epic.getSubTaskIds();
+        for (Integer subTaskId : subTaskIds) {
+            historyManager.remove(subTaskId);
+        }
     }
 
     @Override
@@ -110,6 +114,10 @@ public class InMemoryTaskManager implements TaskManager {
         epics.clear(); // удаляем все эпики
         for (Epic epic : epics.values()) {
             historyManager.remove(epic.getId());
+            ArrayList<Integer> subTaskIds = epic.getSubTaskIds();
+            for (Integer subTaskId : subTaskIds) {
+                historyManager.remove(subTaskId);
+            }
         }
     }
 
