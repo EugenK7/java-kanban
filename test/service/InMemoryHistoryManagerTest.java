@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryHistoryManagerTest {
@@ -36,7 +35,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    @DisplayName("Должны добавляться только 10 просмотренных задач в иторию")
+    @DisplayName("Снято ограничение только на 10 просмотренных задач в итории")
     public void shouldAdd10TasksInHistory() {
         Task task1 = taskManager.createTask(new Task("Задача 1", "Описание", TaskStatus.NEW));
         Task task2 = taskManager.createTask(new Task("Задача 2", "Описание", TaskStatus.NEW));
@@ -65,10 +64,88 @@ class InMemoryHistoryManagerTest {
         taskManager.getTaskById(task12.getId());
         List<Task> listHistory = historyManager.getHistory();
 
-
-        assertEquals(listHistory.size(), 10, "Длина листа истории больше 10");
-        assertEquals(task3, listHistory.get(0), "На певой позиции не задача 3");
-        assertEquals(task12, listHistory.get(9), "На последней позиции не задача 12");
+        assertEquals(listHistory.size(), 12, "Длина листа истории не совпадает");
     }
 
+    @Test
+    @DisplayName("Не добавлять дубликаты в историю")
+    public void shouldNoAddSameTasksInHistory() {
+        Task task1 = taskManager.createTask(new Task("Задача 1", "Описание", TaskStatus.NEW));
+        Task task2 = taskManager.createTask(new Task("Задача 2", "Описание", TaskStatus.NEW));
+
+        taskManager.getTaskById(task1.getId());
+        taskManager.getTaskById(task1.getId());
+
+        List<Task> listHistory = historyManager.getHistory();
+
+        assertEquals(listHistory.size(), 1, "Длина листа истории не совпадает");
+    }
+
+    @Test
+    @DisplayName("Удаление первой задачи")
+    public void testRemoveFirst() {
+        Task task1 = taskManager.createTask(new Task("Задача 1", "Описание", TaskStatus.NEW));
+        Task task2 = taskManager.createTask(new Task("Задача 2", "Описание", TaskStatus.NEW));
+        Task task3 = taskManager.createTask(new Task("Задача 3", "Описание", TaskStatus.NEW));
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.remove(task1.getId());
+
+        assertEquals(historyManager.getHistory(), List.of(task2, task3), "Списки не совпадают");
+    }
+
+    @Test
+    @DisplayName("Удаление средней задачи")
+    public void testRemoveMiddle() {
+        Task task1 = taskManager.createTask(new Task("Задача 1", "Описание", TaskStatus.NEW));
+        Task task2 = taskManager.createTask(new Task("Задача 2", "Описание", TaskStatus.NEW));
+        Task task3 = taskManager.createTask(new Task("Задача 3", "Описание", TaskStatus.NEW));
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.remove(task2.getId());
+
+        assertEquals(historyManager.getHistory(), List.of(task1, task3), "Списки не совпадают");
+    }
+
+    @Test
+    @DisplayName("Удаление последней задачи")
+    public void testRemoveLast() {
+        Task task1 = taskManager.createTask(new Task("Задача 1", "Описание", TaskStatus.NEW));
+        Task task2 = taskManager.createTask(new Task("Задача 2", "Описание", TaskStatus.NEW));
+        Task task3 = taskManager.createTask(new Task("Задача 3", "Описание", TaskStatus.NEW));
+
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.remove(task3.getId());
+
+        assertEquals(historyManager.getHistory(), List.of(task1, task2), "Списки не совпадают");
+    }
+
+    @Test
+    @DisplayName("Удаление единственной задачи")
+    public void testRemoveOnlyLast() {
+        Task task1 = taskManager.createTask(new Task("Задача 1", "Описание", TaskStatus.NEW));
+
+        historyManager.add(task1);
+
+        historyManager.remove(task1.getId());
+
+        assertEquals(historyManager.getHistory(), List.of(), "Задача не удалена");
+    }
+
+    @Test
+    @DisplayName("Удаление из пустого списка")
+    public void testRemoveFromEmptyList() {
+        Task task1 = taskManager.createTask(new Task("Задача 1", "Описание", TaskStatus.NEW));
+
+        historyManager.remove(task1.getId());
+
+        assertEquals(historyManager.getHistory(), List.of(), "Задача не удалена");
+    }
 }
